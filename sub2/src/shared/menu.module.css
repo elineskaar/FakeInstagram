@@ -1,0 +1,85 @@
+/* Styles for the Sidebar */
+.sidebar {
+    position: fixed; /* Make the sidebar fixed */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Full height */
+    width: 250px; /* Adjust the width as needed */
+    background-color: whitesmoke; /* A dark background for the sidebar */
+    color: #fff; /* Light text for better contrast */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Optional shadow */
+    z-index: 1000; /* Ensure it stays on top */
+  }
+  
+  /* Sidebar Links */
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 20px 0; /* Spacing between links */
+  }
+  
+  .sidebar a {
+    text-decoration: none; /* Remove underlines */
+    color: #381d1d; /* Default text color */
+    display: flex; /* Align icon and text horizontally */
+    align-items: center; /* Align icon and text vertically */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transitions for hover effects */
+    padding: 10px; /* Add padding for better spacing */
+    border-radius: 4px; /* Optional: rounded corners */
+    font-size: 20px;
+  }
+  
+  .sidebar a:hover {
+    background-color: #fff; /* Optional: Add background change */
+  }
+  
+  
+  
+
+  @media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0; /* Reset margin when sidebar is hidden */
+  }
+
+}
+
+/* Footer Navbar */
+.footerNavbar {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 15px 10px;
+}
+
+.footerNavbar ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footerNavbar li a {
+  color: white;
+  text-decoration: none;
+  padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footerNavbar {
+    display: flex; /* Show footer navbar on smaller screens */
+  }
+}

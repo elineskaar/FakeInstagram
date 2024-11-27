@@ -1,0 +1,31 @@
+# Ignore build results
+bin/
+obj/
+
+# User-specific files
+.vs/
+.vscode/
+.idea/
+
+# .NET Core specific
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# MacOS and Windows system files
+.DS_Store
+Thumbs.db
+
+# Ignore npm modules (if using Node.js in the API)
+node_modules/
+
+# Ignore secrets and config files
+appsettings.Development.json
+appsettings.json
+
+# Ignore SQLite files (if you are using SQLite database)
+*.db
+
+# Logs
+*.log
