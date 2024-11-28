@@ -120,13 +120,11 @@ const UpdateForm = ({
             </div>
           )}
 
-<div className="button-group">
+            <div className="button-group">
             <button type="submit" className="btn btn-outline-success">
               Update Post
             </button>
-          
-          {/* Button group for Delete and Cancel */}
-          
+
             <button onClick={onDelete} className="btn btn-outline-danger">
               Delete Post
             </button>
