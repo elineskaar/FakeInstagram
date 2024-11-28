@@ -61,6 +61,7 @@
   color: white;
   text-align: center;
   padding: 15px 10px;
+  z-index: 1000;
 }
 
 .footerNavbar ul {

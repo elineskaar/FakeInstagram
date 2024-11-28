@@ -78,7 +78,7 @@
   
   @media (max-width: 768px) {
     .footerNavbar {
-      display: flex; /* Show footer navbar on smaller screens */
+      display: flex; /* Show footer navbar on smaller screens */      display: inline-block;
     }
   }
   

@@ -1,0 +1,29 @@
+/* PostForm.css */
+
+.layoutform {
+    width: 100%;
+    padding-right: 20%;
+    padding-left: 25%;
+    display: flex;
+    margin-top: 3%;
+  }
+  
+  .layoutform .card {
+    width: 100%;
+    margin-bottom: 20%;
+    background-color: rgb(255, 255, 242);
+  }
+  
+  @media (max-width: 768px) {
+    .layoutform {
+      padding: 2.5%;
+      margin-bottom: 20%;
+    }
+    .layoutform .card {
+      width: 100%;
+    }
+  }
+
+
+  
+  

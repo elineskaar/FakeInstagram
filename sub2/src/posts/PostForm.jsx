@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-const PostForm = ({ onSubmit }) => {
-  const [caption, setCaption] = useState('');
+const PostForm = ({ onSubmit, existingText = "", existingImage = null, isUpdatePage = false }) => {
+  const [caption, setCaption] = useState(existingText);
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(existingImage);
+
+  // Use effect to update state when existing data is passed (e.g., for update page)
+  useEffect(() => {
+    setCaption(existingText); // Populate initial data for update mode
+    setImagePreview(existingImage); // Set preview for existing image on update
+  }, [existingText, existingImage]);
 
   const handleCaptionChange = (event) => {
     setCaption(event.target.value);
@@ -13,58 +19,84 @@ const PostForm = ({ onSubmit }) => {
     const file = event.target.files[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file)); // Generer forhåndsvisning
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setImagePreview(e.target.result); // Preview new image
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append('PostText', caption);
+    formData.append("PostText", caption);
     if (image) {
-      formData.append('ImageFile', image);
+      formData.append("ImageFile", image); // Append the new image if present
     }
-    onSubmit(formData); // Send dataene tilbake til CreatePostPage
+    onSubmit(formData); // Submit data to parent component
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="caption">Caption:</label>
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <div className="form-group">
+        <label htmlFor="caption">
+          {isUpdatePage ? "Update Caption ✍️" : "Create Caption ✍️"} (required):
+        </label>
         <input
           type="text"
           id="caption"
+          className="form-control"
           value={caption}
           onChange={handleCaptionChange}
-          placeholder="Enter your caption"
+          placeholder={isUpdatePage ? "Update caption" : "Enter caption"}
           required
         />
       </div>
 
-      <div>
-        <label htmlFor="image">Upload Image:</label>
+      <div className="form-group">
+        <label htmlFor="image">
+          {isUpdatePage ? "Update Image 🖼️" : "Upload Image 🖼️"} (optional):
+        </label>
         <input
           type="file"
           id="image"
+          className="form-control"
           accept="image/*"
           onChange={handleImageChange}
-          required
         />
       </div>
 
+      {/* Show existing image preview when updating, or the new preview */}
       {imagePreview && (
-        <div style={{ marginTop: '10px' }}>
-          <p>Image Preview:</p>
+        <div style={{ marginTop: "10px" }}>
+          <p>{isUpdatePage ? "New Image Preview:" : "Image Preview:"}</p>
           <img
             src={imagePreview}
             alt="Image Preview"
-            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+            style={{ maxWidth: "100%", height: "auto" }}
           />
         </div>
       )}
 
-      <div>
-        <button type="submit">Create Post</button>
+      {/* Show existing image if no new one is selected */}
+      {!imagePreview && existingImage && (
+        <div style={{ marginTop: "10px" }}>
+          <p>Existing Image:</p>
+          <img
+            src={existingImage}
+            alt="Existing Image"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+        </div>
+      )}
+
+      <div className="form-group">
+        <button type="submit" className="btn btn-outline-success">
+          {isUpdatePage ? "Update Post" : "Create Post"}
+        </button>
       </div>
     </form>
   );

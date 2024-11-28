@@ -136,6 +136,96 @@ private async Task<string> UploadImage(IFormFile imageFile)
     return "/images/" + fileName;
 }
 
+ [HttpDelete("delete/{id}")]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var post = await _postRepository.GetPostById(id); // Ensure this is available
+    if (post == null)
+    {
+        _logger.LogError("[PostAPIController] Post not found for the PostId {PostId:0000}", id);
+        return NotFound("Post not found");
+    }
+
+    bool returnOk = await _postRepository.Delete(id);
+    if (!returnOk)
+    {
+        _logger.LogError("[PostAPIController] Post deletion failed for the PostId {PostId:0000}", id);
+        return BadRequest("Post deletion failed");
+    }
+
+    return NoContent(); // 204 No Content - no need to return data after deletion
+}
+   
+
+   // --------------- LIke
+   [HttpPost("like/{postId}")]
+public async Task<IActionResult> LikePost(int postId)
+{
+    var post = await _postRepository.GetPostById(postId);
+    if (post == null)
+    {
+        return NotFound("Post not found");
+    }
+
+    // Create a new like for the post
+    var like = new PostLike
+    {
+        PostId = postId,
+        // You could include user information or other properties for likes
+    };
+
+    bool likeCreated = await _postRepository.AddLikeAsync(like);
+    if (!likeCreated)
+    {
+        return StatusCode(500, "Failed to add like");
+    }
+
+    return Ok("Like added successfully");
+}
+
+
+// -----------Comment
+
+[HttpPost("comment/{postId}")]
+public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostComment comment)
+{
+    var post = await _postRepository.GetPostById(postId);
+    if (post == null)
+    {
+        return NotFound("Post not found");
+    }
+
+    // Set the postId for the comment
+    comment.PostId = postId;
+
+    bool commentAdded = await _postRepository.AddCommentAsync(comment);
+    if (!commentAdded)
+    {
+        return StatusCode(500, "Failed to add comment");
+    }
+
+    return Ok("Comment added successfully");
+}
+[HttpDelete("comment/{postId}/{commentId}")]
+public async Task<IActionResult> DeleteComment(int postId, int commentId)
+{
+    // Ensure the post exists
+    var post = await _postRepository.GetPostById(postId);
+    if (post == null)
+    {
+        return NotFound("Post not found");
+    }
+
+    // Attempt to delete the comment
+    bool deleteSuccess = await _postRepository.DeleteComment(postId, commentId);
+    if (!deleteSuccess)
+    {
+        return StatusCode(500, "Failed to delete comment");
+    }
+
+    return NoContent(); // 204 No Content - no need to return data after deletion
+}
+
 
 }
 
