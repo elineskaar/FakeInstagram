@@ -15,9 +15,9 @@ namespace WebEksamenSub1.Controllers;
 
 public class PostAPIController : Controller{
    private readonly IPostRepository _postRepository;
-    private readonly ILogger<PostController> _logger; //lagt til logging 
+    private readonly ILogger<PostAPIController> _logger; //lagt til logging 
 
-    public PostAPIController(IPostRepository postRepository, ILogger<PostController> logger){
+    public PostAPIController(IPostRepository postRepository, ILogger<PostAPIController> logger){
         _postRepository = postRepository;
         _logger = logger; //lagt til logging
     }
@@ -31,15 +31,22 @@ public class PostAPIController : Controller{
             _logger.LogError("[PostAPIController] Post list not found while executing _postRepository.GetAll()");
             return NotFound("Post list not found");
         }
-        var postDtos = posts.Select(post => new PostDto
-        {
-            Id = post.Id,
-            PostText = post.PostText,
-            ImageUrl = post.ImageUrl,
-            
+        var postsDto = posts.Select(post => new PostDto
+{
+    Id = post.Id,
+    PostText = post.PostText,
+    ImageUrl = post.ImageUrl,
+    LikesCount = post.Likes.Count, // Antall likes
+    Comments = post.Comments.Select(comment => new CommentDto
+    {
+        Id = comment.Id,
+        CommentText = comment.CommentText
+    }).ToList() // Bruk ToList() for å konvertere til List<CommentDto>
+}).ToList(); // Hvis du trenger en liste av PostDto
 
-        });
-        return Ok(postDtos);
+
+
+    return Ok(postsDto);
     }
 
     [HttpPost("create")]
@@ -78,11 +85,27 @@ public async Task<IActionResult> GetPost(int id)
     var post = await _postRepository.GetPostById(id);
     if (post == null)
     {
-        _logger.LogError("PostAPIController] Item not found for the PostId {PostId:0000}", id);
+        _logger.LogError("[PostAPIController] Item not found for the PostId {PostId:0000}", id);
         return NotFound("Post not found for the PostId");
     }
-    return Ok(post);
+
+    // Mapper Post til PostDto
+    var postDto = new PostDto
+    {
+        Id = post.Id,
+        ImageUrl = post.ImageUrl,
+        PostText = post.PostText,
+        LikesCount = post.Likes.Count,
+        Comments = post.Comments.Select(c => new CommentDto
+        {
+            Id = c.Id,
+            CommentText = c.CommentText
+        }).ToList()
+    };
+
+    return Ok(postDto);
 }
+
 
 [HttpPut("update/{id}")]
 public async Task<IActionResult> Update(int id, [FromForm] PostDto postDto)

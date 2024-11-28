@@ -36,7 +36,7 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
               {/* Viser bilde om det finnes */}
               {post.ImageUrl && (
                 <img
-                  src={`${apiUrl}${post.ImageUrl}`}
+                  src={`${apiUrl.replace(/\/$/, '')}${post.ImageUrl}`}
                   className="card-img-top"
                   alt="Post"
                 />
