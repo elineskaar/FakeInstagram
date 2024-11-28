@@ -20,9 +20,6 @@ Thumbs.db
 # Ignore npm modules (if using Node.js in the API)
 node_modules/
 
-# Ignore secrets and config files
-appsettings.Development.json
-appsettings.json
 
 # Ignore SQLite files (if you are using SQLite database)
 *.db
