@@ -41,6 +41,32 @@ public class PostRepository : IPostRepository
             return false;
         }
     }
+
+    public async Task <bool> UpdateComment(PostComment comment)
+    {
+    try{
+        // Check if the post is already tracked in the context
+    var existingComment = await _db.PostComments.FindAsync(comment.Id);
+    
+    if (existingComment != null)
+    {
+        // Detach the existing tracked entity
+        _db.Entry(existingComment).State = EntityState.Detached;
+    }
+
+    // Attach the new post entity (post)
+    _db.PostComments.Update(comment);
+    await _db.SaveChangesAsync();
+    return true;
+    }
+    catch (Exception e){
+         _logger.LogError("[PostRepository] comment FindAsync(id) failed when updating the CommentId {PostId:0000}, error message: {e}",
+            comment, e.Message);
+            return false;
+    }
+    } 
+
+
     public async Task <bool> AddLikeAsync(PostLike like)
     {
         try{

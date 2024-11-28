@@ -9,6 +9,7 @@ public interface IPostRepository
     Task <bool> Update (Post post);
     Task <bool> Delete (int id);
     Task <bool> AddCommentAsync (PostComment comment);
+    Task <bool> UpdateComment (PostComment comment);
     Task <bool> DeleteComment (int postId, int commentId);
     Task <bool> AddLikeAsync (PostLike like);
 }

@@ -280,6 +280,42 @@ public class PostController : Controller
         _logger.LogWarning("[PostController] Comment creation failed {@comment}", model);
         return View(model);
     }
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> UpdateComment(int commentId, int postId, String commentText)
+    {   
+        var updatedComment = new PostComment 
+        {
+            Id = commentId,
+            PostId = postId,
+            CommentText = commentText
+        };
+        if (ModelState.IsValid)
+        {
+            bool returnOk = await _postRepository.UpdateComment(updatedComment);
+
+            if (returnOk){
+                var postWithUpdatedComment = await _postRepository.GetPostById(postId);
+                if(postWithUpdatedComment != null){
+                    var viewModel = new CreatePostCommentViewModel
+                    {
+                        PostId = postWithUpdatedComment.Id,
+                        Post = postWithUpdatedComment  // Legger til post med oppdaterte likes og kommentarer
+                    };
+                return View("ShowPost", viewModel);
+                }
+                else{
+                    _logger.LogError("[PostController] Post not found when updating {PostId:0000}", postId);
+                    return BadRequest("Post not found for the PostId");
+                }
+                
+            }
+        
+    }
+    _logger.LogWarning("[PostController] Comment update failed {@PostComment}", updatedComment);
+    return BadRequest("Comment not found for the CommentId");
+    
+    }
         
     [HttpPost]
     [Authorize]
@@ -314,8 +350,7 @@ public class PostController : Controller
                 var viewModel = new CreatePostCommentViewModel
                 {
                     PostId = postWithLikes.Id,
-                    Post = postWithLikes,  // Legger til post med oppdaterte likes og kommentarer
-                    PostComment = new PostComment() // Hvis du legger til kommentarer
+                    Post = postWithLikes  // Legger til post med oppdaterte likes og kommentarer
                 };
                 return View("ShowPost", viewModel);
             }
@@ -327,11 +362,19 @@ public class PostController : Controller
         {
         // Hvis brukeren var på ShowAll
             var posts = await _postRepository.GetAll();
-            var viewModel = new PostsViewModel
-            {
-                Posts = posts.ToList()
-            };
-            return View("ShowAll", viewModel);
+            if (posts != null){
+                    var viewModel = new PostsViewModel
+                    {
+                        Posts = posts // Bruker posts bare hvis det ikke er null
+                    };
+                    return View("ShowAll", viewModel);
+            }
+            else{
+                var viewModel = new PostsViewModel{
+                    Posts = new List<Post>() // En tom liste i tilfelle posts er null
+                };
+                return View("ShowAll", viewModel);
+            }
         }
         }
         _logger.LogWarning("[PostController] Like creation failed for PostId {PostId:0000}", postId);
@@ -350,18 +393,38 @@ public class PostController : Controller
     [Authorize]
     public async Task<IActionResult> Create(Post post){
         //Så lenge modelldataene er gyldig:
-        if(ModelState.IsValid){
-            if(post.ImageFile != null){
-                //sets up path for Image storage
-                var fileName = Path.GetFileName(post.ImageFile.FileName);
-                var filePath = Path.Combine("wwwroot/images",fileName);
+        if(!ModelState.IsValid){
+            _logger.LogWarning("[PostController] ModelState invalid for {@post}", post);
+            return View(post); // Returnerer skjemaet med valideringsfeil
+        }
 
-                //Save image on server with filepath
-                using(var stream = new FileStream(filePath, FileMode.Create)){
+        string? imageValidationError = post.ValidateImageFile();
+        if (imageValidationError != null)
+        {
+            ModelState.AddModelError(nameof(post.ImageFile), imageValidationError);
+            _logger.LogWarning("[PostController] Invalid image file for {@post}", post);
+            return View(post); // Returnerer skjemaet med feil for bildet
+        }
+            
+            if(post.ImageFile != null){
+                try{
+                    //sets up path for Image storage
+                    var fileName = Path.GetFileName(post.ImageFile.FileName);
+                    var filePath = Path.Combine("wwwroot/images",fileName);
+
+                    //Save image on server with filepath
+                    using(var stream = new FileStream(filePath, FileMode.Create)){
                     await post.ImageFile.CopyToAsync(stream);
+                    }
+                
+                    //Setting image file in Post Model
+                    post.ImageUrl = "/images/" + fileName;
                 }
-                //Setting image file in Post Model
-                post.ImageUrl = "/images/" + fileName;
+                catch (Exception e){
+                    _logger.LogError(e, "[PostController] Error while saving image for {@post}", post);
+                    ModelState.AddModelError(nameof(post.ImageFile), "En feil oppsto under lagring av bildet.");
+                    return View(post);
+                }
             }
             //saving the post in database
             
@@ -369,7 +432,7 @@ public class PostController : Controller
             if(returnOk){
                 return RedirectToAction("ShowAll");
             }
-        }
+        
         _logger.LogWarning("[PostController] Post creation failed {@post}",post);
         return View(post);
     }
@@ -391,23 +454,45 @@ public class PostController : Controller
     [Authorize]
     public async Task<IActionResult> Update(Post post)
     {
-        if(ModelState.IsValid){
+        if(ModelState.IsValid)
+        {
+            string? imageValidationError = post.ValidateImageFile();
+            if (imageValidationError != null)
+            {
+                ModelState.AddModelError(nameof(post.ImageFile), imageValidationError);
+                _logger.LogWarning("[PostController] Invalid image file for {@post}", post);
+                return View(post); // Returnerer skjemaet med valideringsfeil
+            }
             
             if(post.ImageFile != null){
-                //sets up path for Image storage
-                var fileName = Path.GetFileName(post.ImageFile.FileName);
-                var filePath = Path.Combine("wwwroot/images",fileName);
+                try{
+                    //sets up path for Image storage
+                    var fileName = Path.GetFileName(post.ImageFile.FileName);
+                    var filePath = Path.Combine("wwwroot/images",fileName);
 
-                //Save image on server with filepath
-                using(var stream = new FileStream(filePath, FileMode.Create)){
+                    //Save image on server with filepath
+                    using(var stream = new FileStream(filePath, FileMode.Create)){
                     await post.ImageFile.CopyToAsync(stream);
+                    }
+                    //Setting image file in Post Model
+                    post.ImageUrl = "/images/" + fileName;
                 }
-                //Setting image file in Post Model
-                post.ImageUrl = "/images/" + fileName;
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "[PostController] Error while saving image for {@post}", post);
+                    ModelState.AddModelError(nameof(post.ImageFile), "En feil oppsto under lagring av bildet.");
+                    return View(post); // Returnerer skjemaet med feil
+                }
             }
             else{
                 var currentPost = await _postRepository.GetPostById(post.Id);
-                post.ImageUrl = currentPost.ImageUrl;
+                if (currentPost != null){
+                    post.ImageUrl = currentPost.ImageUrl;
+                }
+                else{
+                     ModelState.AddModelError(nameof(post.Id), "Posten ble ikke funnet.");
+                    return View(post); // Returnerer skjemaet med feil
+                }
             }
             //saving the post in database
             
