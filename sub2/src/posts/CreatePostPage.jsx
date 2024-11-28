@@ -1,36 +1,43 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import PostForm from "./PostForm";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CreateForm from './CreateForm'; // Import the CreateForm component
 
-const API_URL = "https://localhost:7106";
+const API_URL = 'https://localhost:7106';
 
 const CreatePostPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handlePostCreate = async (formData) => {
+  const handlePostCreation = async (formData) => {
+    setLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/PostAPI/create`, {
-        method: "POST",
+        method: 'POST',
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error("Error creating post");
+        throw new Error('Failed to create post');
       }
 
-      console.log("Post created successfully");
-      navigate("/posts"); // Naviger tilbake til posts-siden
-    } catch (error) {
-      console.error("There was an issue creating the post:", error);
+      navigate('/posts'); // Redirect to posts list after creation
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="layoutform">
       <div className="card">
-        <div className="card-header">Create a Post</div>
+        <div className="card-header">Create Post</div>
         <div className="card-body">
-          <PostForm onSubmit={handlePostCreate} isUpdatePage={false} />
+          <CreateForm onSubmit={handlePostCreation} />
         </div>
       </div>
     </div>

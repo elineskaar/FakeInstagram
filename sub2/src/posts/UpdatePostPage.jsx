@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import PostForm from './PostForm';  // Import the PostForm component
+import UpdateForm from './UpdateForm'; // Import the new UpdateForm component
 
 const API_URL = 'https://localhost:7106';
 
 const UpdatePostPage = () => {
   const [postText, setPostText] = useState('');
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
   const [existingImage, setExistingImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // Hook to navigate between pages
   const { postId } = useParams();
 
   useEffect(() => {
@@ -32,14 +30,6 @@ const UpdatePostPage = () => {
         .finally(() => setLoading(false));
     }
   }, [postId]);
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file)); 
-    }
-  };
 
   const handlePostUpdate = async (formData) => {
     setLoading(true);
@@ -80,6 +70,10 @@ const UpdatePostPage = () => {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/posts'); // Redirect to posts list without updating or deleting
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -88,10 +82,13 @@ const UpdatePostPage = () => {
       <div className="card">
         <div className="card-header">Update Post</div>
         <div className="card-body">
-          <PostForm onSubmit={handlePostUpdate} existingText={postText} existingImage={existingImage} isUpdatePage={true}/>
-          <button onClick={handleDelete} className="btn btn-danger mt-3">
-            Delete Post
-          </button>
+          <UpdateForm
+            onSubmit={handlePostUpdate}
+            existingText={postText}
+            existingImage={existingImage}
+            onDelete={handleDelete}  // Pass the delete handler
+            onCancel={handleCancel}  // Pass the cancel handler
+          />
         </div>
       </div>
     </div>

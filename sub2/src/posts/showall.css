@@ -1,0 +1,10 @@
+.sticky-sidebar {
+    position: sticky;
+    top: 10px; /* Distance from the top of the viewport */
+    z-index: 10; /* Prevent overlap */
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  

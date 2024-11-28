@@ -5,11 +5,11 @@
     left: 0;
     height: 100vh; /* Full height */
     width: 250px; /* Adjust the width as needed */
-    background-color: whitesmoke; /* A dark background for the sidebar */
+    background-color: rgb(255, 255, 242);/* A dark background for the sidebar */
     color: #fff; /* Light text for better contrast */
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Optional shadow */
-    z-index: 1000; /* Ensure it stays on top */
+    /* Optional shadow */
+    /* Ensure it stays on top */
   }
   
   /* Sidebar Links */

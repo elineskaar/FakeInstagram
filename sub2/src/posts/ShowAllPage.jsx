@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaHeart} from 'react-icons/fa6';
+import { FaHeart } from "react-icons/fa6";
+import ScrollButton from "../components/ScrollButton";
+import styles from './showall.css';
 
 const ShowAllPage = ({ posts, apiUrl, onLike }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter posts based on the search term
+  const filteredPosts = posts.filter((post) =>
+    post.PostText?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container mt-4">
       <h1 style={{ textAlign: "center", marginTop: "3%" }}>Post Overview</h1>
       <div className="row">
-        {/* Venstre sideområde */}
-        <div className="col-md-3">{/* Sidebar content here */}</div>
+  {/* Sidebar with Sticky Search Bar */}
+  <div className="col-md-3">
+    <div className="sticky-sidebar">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search for posts..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+    </div>
+  </div>
 
         {/* Midtre innholdsområde */}
         <div className="col-md-6" style={{ marginBottom: "15%" }}>
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <div className="card mb-4" key={post.Id}>
               {/* Viser bilde om det finnes */}
               {post.ImageUrl && (
@@ -35,7 +54,8 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
                   onClick={() => onLike(post.Id)}
                   className="btn btn-light"
                 >
-                  <i><FaHeart style={{ color: "red", fontSize: "20px" }}/>
+                  <i>
+                    <FaHeart style={{ color: "red", fontSize: "20px" }} />
                   </i>{" "}
                   {post.LikesCount || 0} Likes
                 </button>
@@ -63,18 +83,15 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
 
         {/* Høyre sideområde */}
         <div className="col-md-3">
-          <button id="backToTop" onClick={scrollToTop}>
-            Back to Top
-          </button>
+                {/* Additional content here */}
+            </div>
         </div>
-      </div>
+
+        {/* Scroll-to-Top Button */}
+        <ScrollButton />
     </div>
   );
 };
 
-// Scroll to top funksjon
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
 
 export default ShowAllPage;

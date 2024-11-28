@@ -1,10 +1,14 @@
 /* Reset for å sikre at alt starter fra en kjent tilstand */
+
+:root{
+  --body-bg: rgb(255, 255, 242);
+  --nav-bg: rgb(255, 255, 242);
+}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-
+}
   
   /* Sidebar */
   .sidebar {
@@ -14,15 +18,16 @@
     height: 100vh; /* Full height */
     width: 250px; /* Sidebar width */
     background-color: #333;
-    color: white;
+    color: rgb(255, 255, 242);
     padding: 20px;
     z-index: 1000; /* Ensure it stays on top */
   }
   
   .main-content {
     padding: 20px;
-    background-color: #fff;
+    background-color: rgb(255, 255, 242);
     overflow-y: auto;
+    height: 100vh;
     margin-left: 250px; /* Adjust for sidebar width */
     transition: margin-left 0.3s; /* Smooth transition when sidebar is hidden */
   }
@@ -43,9 +48,9 @@
     }
   
     .main-content {
-      max-width: 600px; /* Limit width for readability */
       width: 100%; /* Make sure it takes up the full width if needed */
       margin: 0 auto; /* Center content horizontally */
+      
     }
   }
   
