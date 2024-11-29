@@ -203,7 +203,7 @@ public async Task<IActionResult> LikePost(int postId)
         return StatusCode(500, "Failed to add like");
     }
 
-    return Ok("Like added successfully");
+    return Ok(new { LikesCount = post.Likes.Count});
 }
 
 
@@ -211,7 +211,7 @@ public async Task<IActionResult> LikePost(int postId)
 
 [HttpPost("comment/{postId}")]
 public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostComment comment)
-{
+{   
     var post = await _postRepository.GetPostById(postId);
     if (post == null)
     {

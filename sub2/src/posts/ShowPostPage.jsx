@@ -40,7 +40,7 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
       }
 
     const commentData = {
-      PostId: 4,
+      PostId: parseInt(postId, 10),
       CommentText: newComment,
     };
     console.log('postId:', postId);
@@ -79,6 +79,7 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
     })
     .then((response) => response.json())
       .then((likeData) => {
+        console.log('Server response:', likeData);
         setPost((prevPost) => ({
           ...prevPost,
           LikesCount: likeData.LikesCount  // Oppdater likesCount
