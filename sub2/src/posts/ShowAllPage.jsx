@@ -58,7 +58,7 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
                     <FaHeart style={{ color: "red", fontSize: "20px" }} />
                   </i>{" "}
                   {post.LikesCount || 0} Likes
-                </button>
+                </button> 
                 <hr />
 
                 {/* Oppdater-knapp */}
@@ -80,7 +80,6 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
             </div>
           ))}
         </div>
-
         
         </div>
 
