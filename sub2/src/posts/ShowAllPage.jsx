@@ -81,10 +81,7 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
           ))}
         </div>
 
-        {/* Høyre sideområde */}
-        <div className="col-md-3">
-                {/* Additional content here */}
-            </div>
+        
         </div>
 
         {/* Scroll-to-Top Button */}

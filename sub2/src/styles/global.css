@@ -3,6 +3,7 @@
 :root{
   --body-bg: rgb(255, 255, 242);
   --nav-bg: rgb(255, 255, 242);
+  height: 100%;
 }
 * {
     margin: 0;
@@ -10,48 +11,62 @@
     box-sizing: border-box;
 }
   
-  /* Sidebar */
+* Sidebar */
+.sidebar {
+  position: fixed; /* Keep sidebar fixed on the left side */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height */
+  width: 250px; /* Sidebar width */
+  background-color: #333;
+  color: rgb(255, 255, 242);
+  padding: 20px;
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+/* Main content styles */
+.main-content {
+  background-color: rgb(255, 255, 242); /* Same background color */
+  min-height: 100vh; /* Ensures it takes up at least the full height */
+  padding-bottom: 100px;
+  margin-left: 250px; /* Adjust for sidebar width */
+  overflow-y: auto; /* Allow scrolling if content is taller than the viewport */
+  transition: margin-left 0.3s; /* Smooth transition when sidebar is hidden */
+}
+
+/* Scroll Button */
+.ScrollButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #381d1d;
+  color: white;
+  border: none;
+  border-radius: 20%;
+  padding: 10px;
+  font-size: 25px;
+  cursor: pointer;
+  z-index: 1001; /* Ensure it's above other content */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid-container {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+  }
+
   .sidebar {
-    position: fixed; /* Keep sidebar fixed on the left side */
-    top: 0;
-    left: 0;
-    height: 100vh; /* Full height */
-    width: 250px; /* Sidebar width */
-    background-color: #333;
-    color: rgb(255, 255, 242);
-    padding: 20px;
-    z-index: 1000; /* Ensure it stays on top */
+    display: none; /* Hide sidebar on small screens */
   }
-  
+
   .main-content {
-    padding: 20px;
-    background-color: rgb(255, 255, 242);
-    overflow-y: auto;
-    height: 100vh;
-    margin-left: 250px; /* Adjust for sidebar width */
-    transition: margin-left 0.3s; /* Smooth transition when sidebar is hidden */
+    width: 100%; /* Make sure it takes up the full width if needed */
+    margin: 0 auto; /* Center content horizontally */
   }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    /* Remove grid layout */
-    .grid-container {
-      display: flex;
-      flex-direction: column; /* Stack content vertically */
-      height: 100vh; /* Full height */
-      justify-content: center; /* Center content vertically */
-      align-items: center; /* Center content horizontally */
-    }
-  
-    .sidebar {
-      display: none; /* Hide sidebar on small screens */
-    }
-  
-    .main-content {
-      width: 100%; /* Make sure it takes up the full width if needed */
-      margin: 0 auto; /* Center content horizontally */
-    }
-  }
+}
   
   /* Footer navbar styles */
   .footerNavbar {

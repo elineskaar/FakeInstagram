@@ -4,12 +4,10 @@
     top: 0;
     left: 0;
     height: 100vh; /* Full height */
-    width: 250px; /* Adjust the width as needed */
+    width: 260px; /* Adjust the width as needed */
     background-color: rgb(255, 255, 242);/* A dark background for the sidebar */
     color: #fff; /* Light text for better contrast */
     padding: 20px;
-    /* Optional shadow */
-    /* Ensure it stays on top */
   }
   
   /* Sidebar Links */
@@ -19,23 +17,57 @@
   }
   
   .sidebar li {
-    margin: 20px 0; /* Spacing between links */
+    margin: 50px 0; /* Spacing between links */
   }
   
-  .sidebar a {
-    text-decoration: none; /* Remove underlines */
-    color: #381d1d; /* Default text color */
-    display: flex; /* Align icon and text horizontally */
-    align-items: center; /* Align icon and text vertically */
-    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transitions for hover effects */
-    padding: 10px; /* Add padding for better spacing */
-    border-radius: 4px; /* Optional: rounded corners */
-    font-size: 20px;
-  }
-  
-  .sidebar a:hover {
-    background-color: #fff; /* Optional: Add background change */
-  }
+ /* Sidebar and Footer Navbar Links */
+.sidebar a, .footerNavbar li a {
+  display: inline-block; /* Restrict width to content */
+  color: #381d1d; /* Default text color */
+  font-size: 25px;
+  text-decoration: none;
+  transition: transform 0.3s, color 0.3s; /* Smooth transitions */
+}
+
+.sidebar a:hover, .footerNavbar li a:hover {
+  color: rgb(239, 20, 57); /* Change text color on hover */
+  transform: scale(1.07); /* Slightly enlarge the icon/text */
+}
+
+.sidebar a.active, .footerNavbar li a.active {
+  color: rgb(239, 20, 57); /* Set the active link color */
+}
+
+.footerNavbar {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  z-index: 1000;
+}
+
+.footerNavbar ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  margin-left: 5px;
+  padding: 0;
+}
+
+.footerNavbar li{
+  margin: 0 15px;
+}
+
+.footerNavbar li a {
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+}
   
   
   
@@ -47,40 +79,11 @@
   .main-content {
     margin-left: 0; /* Reset margin when sidebar is hidden */
   }
-
-}
-
-/* Footer Navbar */
-.footerNavbar {
-  display: none; /* Hidden by default */
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 15px 10px;
-  z-index: 1000;
-}
-
-.footerNavbar ul {
-  display: flex;
-  justify-content: space-around;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.footerNavbar li a {
-  color: white;
-  text-decoration: none;
-  padding: 20px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
   .footerNavbar {
     display: flex; /* Show footer navbar on smaller screens */
   }
+
 }
+
+
+

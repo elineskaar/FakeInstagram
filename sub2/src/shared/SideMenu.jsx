@@ -34,12 +34,9 @@ const SideMenu = () => {
     </nav>
     <footer className={styles.footerNavbar}>
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li>
-            {/* Using <a> tag for Posts in footer as well */}
-            <a href="/posts" onClick={handlePostsClick}>Posts</a>
-          </li>
-        <li><Link to="/posts/CreatePostPage">Create post</Link></li>
+        <li><Link to="/"><FaHouse style={{fontSize:"25px"}}/></Link></li>
+        <li><Link to="/posts"><FaClipboardList style={{fontSize:"25px"}} /></Link></li>
+        <li><Link to="/posts/CreatePostPage"><FaCirclePlus style={{fontSize:"25px"}} /></Link></li>
       </ul>
     </footer>
  </>

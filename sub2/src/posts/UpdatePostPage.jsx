@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import UpdateForm from './UpdateForm'; // Import the new UpdateForm component
+import UpdateForm from './UpdateForm';
 
 const API_URL = 'https://localhost:7106';
 
@@ -9,7 +9,7 @@ const UpdatePostPage = () => {
   const [existingImage, setExistingImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();  // Hook to navigate between pages
+  const navigate = useNavigate();
   const { postId } = useParams();
 
   useEffect(() => {
@@ -51,27 +51,12 @@ const UpdatePostPage = () => {
     }
   };
 
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this post?');
-    if (confirmDelete) {
-      try {
-        const response = await fetch(`${API_URL}/api/PostAPI/delete/${postId}`, {
-          method: 'DELETE',
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to delete post');
-        }
-
-        navigate('/posts'); // Redirect to posts list after delete
-      } catch (err) {
-        setError(err.message);
-      }
-    }
+  const handleNavigateToDelete = () => {
+    navigate(`/posts/delete/${postId}`);
   };
 
   const handleCancel = () => {
-    navigate('/posts'); // Redirect to posts list without updating or deleting
+    navigate('/posts');
   };
 
   if (loading) return <p>Loading...</p>;
@@ -86,8 +71,8 @@ const UpdatePostPage = () => {
             onSubmit={handlePostUpdate}
             existingText={postText}
             existingImage={existingImage}
-            onDelete={handleDelete}  // Pass the delete handler
-            onCancel={handleCancel}  // Pass the cancel handler
+            onNavigateToDelete={handleNavigateToDelete}
+            onCancel={handleCancel}
           />
         </div>
       </div>

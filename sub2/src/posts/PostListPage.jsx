@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ShowAllPage from './ShowAllPage';
+import ShowPostPage from './ShowPostPage';
 
 const API_URL = 'https://localhost:7106';
 

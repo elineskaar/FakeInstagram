@@ -226,9 +226,29 @@ public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostCommen
     {
         return StatusCode(500, "Failed to add comment");
     }
+    var updatedPost = await _postRepository.GetPostById(postId);
+    if (updatedPost == null)
+    {
+        return StatusCode(500, "Failed to fetch updated post");
+    }
 
-    return Ok("Comment added successfully");
+    // Map the updated post to PostDto
+    var updatedPostDto = new PostDto
+    {
+        Id = updatedPost.Id,
+        PostText = updatedPost.PostText,
+        ImageUrl = updatedPost.ImageUrl,
+        LikesCount = updatedPost.Likes.Count,
+        Comments = updatedPost.Comments.Select(c => new CommentDto
+        {
+            Id = c.Id,
+            CommentText = c.CommentText
+        }).ToList()
+    };
+
+    return Ok(updatedPostDto); // Return the updated post data
 }
+
 [HttpDelete("comment/{postId}/{commentId}")]
 public async Task<IActionResult> DeleteComment(int postId, int commentId)
 {

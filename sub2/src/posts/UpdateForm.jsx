@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import EmojiPicker from "emoji-picker-react"; // Import the default export from emoji-picker-react
-import "./PostForm.css"; // Ensure you import the CSS file for styling
+import EmojiPicker from "emoji-picker-react";
+import "./PostForm.css";
 
 const UpdateForm = ({
   onSubmit,
   existingText = "",
   existingImage = null,
-  onDelete,
-  onCancel
+  onCancel,
+  onNavigateToDelete, // Prop for navigating to the delete page
 }) => {
   const [caption, setCaption] = useState(existingText);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(existingImage);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  // Use effect to update state when existing data is passed (e.g., for update page)
   useEffect(() => {
     setCaption(existingText); // Populate initial data for update mode
     setImagePreview(existingImage); // Set preview for existing image on update
@@ -78,7 +77,6 @@ const UpdateForm = ({
             </div>
           </div>
 
-          {/* Show the emoji picker when the user clicks the emoji button */}
           {showEmojiPicker && (
             <div style={{ position: "absolute", zIndex: 10 }}>
               <EmojiPicker onEmojiClick={handleEmojiClick} />
@@ -86,7 +84,7 @@ const UpdateForm = ({
           )}
 
           <div className="form-group">
-            <label htmlFor="image">Update Image 🖼️ </label>
+            <label htmlFor="image">Update Image 🖼️</label>
             <input
               type="file"
               id="image"
@@ -96,10 +94,9 @@ const UpdateForm = ({
             />
           </div>
 
-          {/* Show existing image preview when updating, or the new preview */}
           {imagePreview && (
             <div style={{ marginTop: "10px" }}>
-              <p>New Image Preview:</p>
+              <p>Image Preview:</p>
               <img
                 src={imagePreview}
                 alt="Image Preview"
@@ -108,27 +105,22 @@ const UpdateForm = ({
             </div>
           )}
 
-          {/* Show existing image if no new one is selected */}
-          {!imagePreview && existingImage && (
-            <div style={{ marginTop: "10px" }}>
-              <p>Existing Image:</p>
-              <img
-                src={existingImage}
-                alt="Existing Image"
-                style={{ maxWidth: "100%", height: "auto" }}
-              />
-            </div>
-          )}
-
-            <div className="button-group">
+          <div className="button-group" style={{ marginTop: "20px" }}>
             <button type="submit" className="btn btn-outline-success">
               Update Post
             </button>
-
-            <button onClick={onDelete} className="btn btn-outline-danger">
+            <button
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={onNavigateToDelete} // Navigate to delete page
+            >
               Delete Post
             </button>
-            <button onClick={onCancel} className="btn btn-outline-secondary">
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={onCancel} // Navigate back to posts
+            >
               Cancel
             </button>
           </div>

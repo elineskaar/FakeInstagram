@@ -1,12 +1,14 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import HomePage from './home/HomePage';
-import PostListPage from './posts/PostListPage';
-import SideMenu from './shared/SideMenu';
-import './styles/global.css';
-import CreatePostPage from './posts/CreatePostPage';
-import UpdatePostPage from './posts/UpdatePostPage';
-import ShowPostPage from './posts/ShowPostPage';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./home/HomePage";
+import PostListPage from "./posts/PostListPage";
+import SideMenu from "./shared/SideMenu";
+import CreatePostPage from "./posts/CreatePostPage";
+import UpdatePostPage from "./posts/UpdatePostPage";
+import ShowPostPage from "./posts/ShowPostPage";
+import DeletePage from "./posts/DeletePage";
+import ScrollButton from "./components/ScrollButton"; // Import the scroll button
+import "./styles/global.css";
 
 const App = () => {
   return (
@@ -23,15 +25,15 @@ const App = () => {
             <Route path="/posts/CreatePostPage" element={<CreatePostPage />} />
             <Route path="/posts/update/:postId" element={<UpdatePostPage />} />
             <Route path="/posts/show/:postId" element={<ShowPostPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/posts/show/:postId" element={<DeletePage />} />
           </Routes>
         </main>
-
-        
-    
       </div>
+
+      {/* Scroll-to-Top Button (Outside main-content) */}
+      <ScrollButton />
     </Router>
   );
-}
+};
 
 export default App;
