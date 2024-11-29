@@ -25,7 +25,7 @@ const App = () => {
             <Route path="/posts/CreatePostPage" element={<CreatePostPage />} />
             <Route path="/posts/update/:postId" element={<UpdatePostPage />} />
             <Route path="/posts/show/:postId" element={<ShowPostPage />} />
-            <Route path="/posts/show/:postId" element={<DeletePage />} />
+            <Route path="/posts/delete/:postId" element={<DeletePage />} />
           </Routes>
         </main>
       </div>

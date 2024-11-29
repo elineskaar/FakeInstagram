@@ -218,10 +218,11 @@ public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostCommen
         return NotFound("Post not found");
     }
 
-    // Set the postId for the comment
-    comment.PostId = postId;
-
-    bool commentAdded = await _postRepository.AddCommentAsync(comment);
+    var newComment = new PostComment {
+        PostId = postId,
+        CommentText = comment.CommentText
+    };
+    bool commentAdded = await _postRepository.AddCommentAsync(newComment);
     if (!commentAdded)
     {
         return StatusCode(500, "Failed to add comment");
@@ -233,20 +234,12 @@ public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostCommen
     }
 
     // Map the updated post to PostDto
-    var updatedPostDto = new PostDto
+    var updatedComments = updatedPost.Comments.Select(c => new CommentDto
     {
-        Id = updatedPost.Id,
-        PostText = updatedPost.PostText,
-        ImageUrl = updatedPost.ImageUrl,
-        LikesCount = updatedPost.Likes.Count,
-        Comments = updatedPost.Comments.Select(c => new CommentDto
-        {
-            Id = c.Id,
-            CommentText = c.CommentText
-        }).ToList()
-    };
-
-    return Ok(updatedPostDto); // Return the updated post data
+        Id = c.Id,
+        CommentText = c.CommentText
+    }).ToList();
+    return Ok(updatedComments);
 }
 
 [HttpDelete("comment/{postId}/{commentId}")]

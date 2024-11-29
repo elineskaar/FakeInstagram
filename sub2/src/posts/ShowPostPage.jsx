@@ -40,9 +40,11 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
       }
 
     const commentData = {
-      PostId: postId,
+      PostId: 4,
       CommentText: newComment,
     };
+    console.log('postId:', postId);
+    console.log('commentData:', commentData);
 
     // Legg til kommentar
     fetch(`${API_URL}/api/PostAPI/comment/${postId}`, {
@@ -52,33 +54,36 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
       },
       body: JSON.stringify(commentData),
     })
-      .then((response) => response.json())
-      .then((newCommentData) => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to add comment');
+        }
+        return response.json(); // Returner alle kommentarer, ikke bare den nye
+      })
+      .then((updatedComments) => {
         setPost((prevPost) => ({
           ...prevPost,
-          Comments: [...prevPost.Comments, newCommentData],
+          Comments: updatedComments,  // Oppdater kommentarliste med den fullstendige listen
         }));
-        setNewComment('');
+        setNewComment(''); // Tøm kommentarfeltet
       })
       .catch((error) => {
         console.error('Feil ved legge til kommentar:', error);
       });
+    
   };
 
   const handleLikePost = async () => {
     fetch(`${API_URL}/api/PostAPI/like/${postId}`, {
       method: 'POST',
     })
-      .then((response) => response.json())
+    .then((response) => response.json())
       .then((likeData) => {
         setPost((prevPost) => ({
           ...prevPost,
           LikesCount: likeData.LikesCount  // Oppdater likesCount
         }));
       })
-      .catch((error) => {
-        console.error('Feil ved liking av post:', error);
-      });
   };
 
   const handleDeleteComment = (commentId) => {

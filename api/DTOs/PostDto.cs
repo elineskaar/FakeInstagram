@@ -22,6 +22,7 @@ namespace WebEksamenSub1.DTOs{
     public class CommentDto
     {
         public int Id { get; set; }
+        public int PostId {get; set;}
         public string CommentText { get; set; } = string.Empty;
     }
     

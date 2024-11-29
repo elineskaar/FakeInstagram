@@ -23,8 +23,9 @@ const UpdatePostPage = () => {
           return response.json();
         })
         .then((data) => {
-          setPostText(data.postText);
-          setExistingImage(data.imageUrl);
+          console.log('Fetched data:', data);  // Logg dataene for å verifisere
+          setPostText(data.postText);  // Sett tekst
+          setExistingImage(data.imageUrl ? `${API_URL}${data.imageUrl}` : null);  // Sett bilde-URL
         })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
@@ -51,7 +52,7 @@ const UpdatePostPage = () => {
     }
   };
 
-  const handleNavigateToDelete = () => {
+  const handleNavigateToDelete = async () => {
     navigate(`/posts/delete/${postId}`);
   };
 

@@ -1,23 +1,35 @@
-import React, { useState, useEffect } from "react";
-import EmojiPicker from "emoji-picker-react";
-import "./PostForm.css";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import EmojiPicker from 'emoji-picker-react';
 
-const UpdateForm = ({
-  onSubmit,
-  existingText = "",
-  existingImage = null,
-  onCancel,
-  onNavigateToDelete, // Prop for navigating to the delete page
-}) => {
-  const [caption, setCaption] = useState(existingText);
+const API_URL = 'https://localhost:7106';
+
+const UpdateForm = ({ onSubmit, onCancel, onNavigateToDelete }) => {
+  const { postId } = useParams(); // Henter postId fra URL
+  const [post, setPost] = useState(null);
+  const [caption, setCaption] = useState('');
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(existingImage);
+  const [imagePreview, setImagePreview] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
+  // Hent post-data når komponenten lastes inn
   useEffect(() => {
-    setCaption(existingText); // Populate initial data for update mode
-    setImagePreview(existingImage); // Set preview for existing image on update
-  }, [existingText, existingImage]);
+    const fetchPostData = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/PostAPI/${postId}`);
+        if (!response.ok) {
+          throw new Error('Post not found');
+        }
+        const data = await response.json();
+        setPost(data);
+        setCaption(data.PostText || ''); // Sett eksisterende tekst
+        setImagePreview(data.ImageUrl || ''); // Sett eksisterende bilde-URL
+      } catch (error) {
+        console.error('Error fetching post data:', error);
+      }
+    };
+    fetchPostData();
+  }, [postId]);
 
   const handleCaptionChange = (event) => {
     setCaption(event.target.value);
@@ -28,18 +40,14 @@ const UpdateForm = ({
     if (file) {
       setImage(file);
       const reader = new FileReader();
-
-      reader.onload = (e) => {
-        setImagePreview(e.target.result); // Preview new image
-      };
-
+      reader.onload = (e) => setImagePreview(e.target.result); // Forhåndsvisning av bildet
       reader.readAsDataURL(file);
     }
   };
 
   const handleEmojiClick = (emojiObject) => {
-    setCaption(caption + emojiObject.emoji);
-    setShowEmojiPicker(false); // Close emoji picker after selecting
+    setCaption(caption + emojiObject.emoji); // Legg til emoji i teksten
+    setShowEmojiPicker(false); // Lukk emoji-pickeren
   };
 
   const handleSubmit = (event) => {
@@ -47,10 +55,14 @@ const UpdateForm = ({
     const formData = new FormData();
     formData.append("PostText", caption);
     if (image) {
-      formData.append("ImageFile", image); // Append the new image if present
+      formData.append("ImageFile", image);
     }
-    onSubmit(formData); // Submit data to parent component
+    onSubmit(formData);
   };
+
+  if (!post) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="layoutform">
@@ -97,9 +109,10 @@ const UpdateForm = ({
           {imagePreview && (
             <div style={{ marginTop: "10px" }}>
               <p>Image Preview:</p>
+              <p>{imagePreview}</p>
               <img
                 src={imagePreview}
-                alt="Image Preview"
+                alt={imagePreview}
                 style={{ maxWidth: "100%", height: "auto" }}
               />
             </div>
@@ -112,14 +125,14 @@ const UpdateForm = ({
             <button
               type="button"
               className="btn btn-outline-danger"
-              onClick={onNavigateToDelete} // Navigate to delete page
+              onClick={onNavigateToDelete}
             >
               Delete Post
             </button>
             <button
               type="button"
               className="btn btn-outline-secondary"
-              onClick={onCancel} // Navigate back to posts
+              onClick={onCancel}
             >
               Cancel
             </button>
