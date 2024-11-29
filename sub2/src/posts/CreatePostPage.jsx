@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateForm from './CreateForm'; // Import the CreateForm component
+import CreateForm from './CreateForm'; 
 
 const API_URL = 'https://localhost:7106';
 
