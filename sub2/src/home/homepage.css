@@ -1,4 +1,9 @@
 /* Basic Layout */
+.welcome-container h1 {
+  font-size: 35px; /* Adjust size as desired */
+  color: #381d1d;; /* Optional: Add a custom color */
+}
+
 .welcome-container {
     display: flex;
     justify-content: center;
@@ -11,6 +16,7 @@
   
   /* Container for Robot and Speech Bubble */
   .robot-container {
+    margin-top: 10%;
     position: relative;
     display: flex;
     align-items: center;
@@ -42,11 +48,12 @@
   /* Speech Bubble Styling */
   .speech-bubble {
     position: absolute;
-    left: 260px; /* Position the speech bubble to the right of the robot */
+    left: 230px; /* Position the speech bubble to the right of the robot */
     background-color: #ffffff;
     border-radius: 10px;
     padding: 15px;
     width: 200px;
+    bottom: 120px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
   
@@ -62,8 +69,12 @@
   .robot-container .robot svg {
     animation: bounce 2s ease-in-out infinite;
   }
+  .dancing-robot-container:hover .dancing-robot {
+    animation: dance 0.8s infinite ease-in-out;
+  }
   
-  /* Bounce animation to make the robot look more dynamic */
+  
+  
   @keyframes bounce {
     0%, 100% {
       transform: translateY(0);
@@ -72,4 +83,24 @@
       transform: translateY(-10px);
     }
   }
+  
+  @media (max-width: 768px) {
+    .robot svg {
+      width: 180px; 
+      height: 180px;
+      transform: scale(1); 
+    }
+  
+    .speech-bubble {
+      left: 150px; 
+      width: 150px;
+      padding: 10px;
+      bottom: 100px; 
+    }
+  
+    .speech-bubble p {
+      font-size: 16px; 
+    }
+  }
+
   
