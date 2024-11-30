@@ -58,15 +58,15 @@ const DeletePage = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="layoutform">
-      <div className="card">
+    <div className="layoutpost">
+      
         <div className="card-body">
           <h5>Are you sure you want to delete this post?</h5>
           {post && (
             <div>
               <h6>Post Preview:</h6>
-              <p>{post.PostText}</p>
               {post.ImageUrl && <img src={post.ImageUrl} alt="Post Preview" style={{ maxWidth: '100%' }} />}
+              <p style={{marginLeft:"1%", fontSize:"20px"}}>{post.PostText}</p>
             </div>
           )}
           <div className="button-group" style={{ marginTop: '20px' }}>
@@ -78,7 +78,6 @@ const DeletePage = () => {
             </button>
           </div>
         </div>
-      </div>
     </div>
   );
 };

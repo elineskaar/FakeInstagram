@@ -109,7 +109,6 @@ const UpdateForm = ({ onSubmit, onCancel, onNavigateToDelete }) => {
           {imagePreview && (
             <div style={{ marginTop: "10px" }}>
               <p>Image Preview:</p>
-              <p>{imagePreview}</p>
               <img
                 src={imagePreview}
                 alt={imagePreview}

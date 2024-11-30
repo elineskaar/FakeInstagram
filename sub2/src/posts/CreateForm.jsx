@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import EmojiPicker from "emoji-picker-react"; // Use default export
-import "./PostForm.css"; // Ensure you import the CSS file for styling
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import EmojiPicker from "emoji-picker-react"; 
+import "./PostForm.css"; 
 
 const CreateForm = ({ onSubmit }) => {
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleCaptionChange = (event) => {
     setCaption(event.target.value);
@@ -41,9 +43,12 @@ const CreateForm = ({ onSubmit }) => {
     onSubmit(formData); // Send the form data to parent
   };
 
+  const handleCancel = () => {
+    navigate('/posts'); // Redirect back to the posts list page
+  };
+
   return (
     <div className="layoutform">
-      {/* Card container for the form */}
       <div className="card">
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="form-group">
@@ -68,7 +73,6 @@ const CreateForm = ({ onSubmit }) => {
             </div>
           </div>
 
-          {/* Show the emoji picker when the user clicks the emoji button */}
           {showEmojiPicker && (
             <div style={{ position: "absolute", zIndex: 10 }}>
               <EmojiPicker onEmojiClick={handleEmojiClick} />
@@ -98,8 +102,15 @@ const CreateForm = ({ onSubmit }) => {
           )}
 
           <div className="form-group">
-            <button type="submit" className="btn btn-outline-success">
+            <button type="submit" className="btn btn-outline-success" style={{ marginTop: "3%" }}>
               Create Post
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              style={{ marginTop: "3%", marginLeft:"2%"}}
+              onClick={handleCancel}>
+              Cancel request
             </button>
           </div>
         </form>
