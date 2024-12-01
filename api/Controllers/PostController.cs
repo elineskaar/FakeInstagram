@@ -52,24 +52,28 @@ public class PostAPIController : Controller{
     [HttpPost("create")]
 public async Task<IActionResult> Create([FromForm] PostDto postDto)
 {
-    if (postDto == null || postDto.ImageFile == null)
+    if (postDto == null)
     {
         return BadRequest("Post cannot be null or image is missing");
     }
-
-    // Lagre bildet på serveren
-    var imagePath = Path.Combine("wwwroot", "images", postDto.ImageFile.FileName);
-    using (var stream = new FileStream(imagePath, FileMode.Create))
-    {
-        await postDto.ImageFile.CopyToAsync(stream);
-    }
-
-    // Lagre URL-en til bildet i databasen
     var newPost = new Post
-    {
-        PostText = postDto.PostText,
-        ImageUrl = $"/images/{postDto.ImageFile.FileName}" // URL for bildet
-    };
+        {
+            PostText = postDto.PostText,
+        };
+    
+
+    if(postDto.ImageFile != null){
+        var imagePath = Path.Combine("wwwroot", "images", postDto.ImageFile.FileName);
+        using (var stream = new FileStream(imagePath, FileMode.Create))
+        {
+            await postDto.ImageFile.CopyToAsync(stream);
+        }
+
+        // Lagre URL-en til bildet i databasen
+        newPost.ImageUrl = $"/images/{postDto.ImageFile.FileName}";
+    }
+    // Lagre posten på serveren
+    
 
     bool returnOk = await _postRepository.Create(newPost);
     if (returnOk)
@@ -203,15 +207,15 @@ public async Task<IActionResult> LikePost(int postId)
         return StatusCode(500, "Failed to add like");
     }
 
-    return Ok(new { LikesCount = post.Likes.Count});
+    return Ok(new{LikesCount = post.Likes.Count});
 }
 
 
 // -----------Comment
 
 [HttpPost("comment/{postId}")]
-public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostComment comment)
-{   
+public async Task<IActionResult> CommentOnPost(int postId, [FromBody] CommentDto comment)
+{
     var post = await _postRepository.GetPostById(postId);
     if (post == null)
     {
@@ -240,6 +244,41 @@ public async Task<IActionResult> CommentOnPost(int postId, [FromBody] PostCommen
         CommentText = c.CommentText
     }).ToList();
     return Ok(updatedComments);
+}
+
+[HttpPut("comment/{postId}")]
+public async Task<IActionResult> UpdateComment(int postId, [FromBody] CommentDto commentDto)
+{
+    if (commentDto == null)
+    {
+        return BadRequest("Comment data cannot be null");
+    }
+    //find post in database by id
+    var existingPost = await _postRepository.GetPostById(postId);
+    if (existingPost == null)
+    {
+        return NotFound("Post not found");
+    }
+
+    // Find comment
+    var existingComment = existingPost.Comments.FirstOrDefault(c => c.Id == commentDto.Id);
+    if (existingComment == null)
+    {
+        return NotFound("Comment not found");
+    }
+
+    //Update commenttext
+    existingComment.CommentText = commentDto.CommentText;
+
+    // Update post with comments in database
+    bool updateSuccessful = await _postRepository.Update(existingPost);
+    if (updateSuccessful)
+    {
+        return Ok(existingComment);
+    }
+
+    _logger.LogWarning("[PostAPIController] Comment update failed {@comment}", existingComment);
+    return StatusCode(500, "Internal server error");
 }
 
 [HttpDelete("comment/{postId}/{commentId}")]

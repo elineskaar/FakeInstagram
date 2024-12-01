@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaHeart } from "react-icons/fa6";
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';  // Importing icons from FA6
+import EmojiPicker from "emoji-picker-react";
+import { FaEdit, FaTrashAlt, FaSmile} from 'react-icons/fa';  // Importing icons from FA6
 import './showpost.css';
 
 const API_URL = 'https://localhost:7106';
@@ -11,6 +12,7 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
   const [post, setPost] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -65,7 +67,8 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
           ...prevPost,
           Comments: updatedComments,  // Oppdater kommentarliste med den fullstendige listen
         }));
-        setNewComment(''); // Tøm kommentarfeltet
+        setNewComment('');
+        setShowEmojiPicker(false); 
       })
       .catch((error) => {
         console.error('Feil ved legge til kommentar:', error);
@@ -79,7 +82,7 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
     })
     .then((response) => response.json())
       .then((likeData) => {
-        console.log('Server response:', likeData);
+        console.log('Server response',likeData);
         setPost((prevPost) => ({
           ...prevPost,
           LikesCount: likeData.LikesCount  // Oppdater likesCount
@@ -91,7 +94,7 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
     // Prompt user for confirmation before deleting
     const confirmDelete = window.confirm('Are you sure you want to delete this comment?');
     if (confirmDelete) {
-      fetch(`${API_URL}/api/PostAPI/comment/${commentId}`, {
+      fetch(`${API_URL}/api/PostAPI/comment/${postId}/${commentId}`, {
         method: 'DELETE',
       })
         .then(() => {
@@ -106,13 +109,32 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
     }
   };
 
+  const handleEmojiClick = (emojiObject) => {
+    setNewComment((prevComment) => prevComment + emojiObject.emoji);
+    setShowEmojiPicker(false); // Close picker after selection
+  };
+
   const handleUpdateComment = (commentId, updatedText) => {
-    fetch(`${API_URL}/api/PostAPI/comment/${commentId}`, {
+    if (!updatedText) return; // Legg ikke til tomme kommentarer
+    if (!updatedText.trim()) {
+        alert("Comment cannot be empty");
+        return;
+      }
+
+    const commentData = {
+      Id: commentId,
+      PostId: parseInt(postId, 10),
+      CommentText: updatedText,
+    };
+    console.log('postId:', postId);
+    console.log('commentId:', commentId);
+    console.log('commentData:', commentData);
+    fetch(`${API_URL}/api/PostAPI/comment/${postId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ CommentText: updatedText }),
+      body: JSON.stringify(commentData),
     })
       .then((response) => response.json())
       .then((updatedComment) => {
@@ -127,6 +149,9 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
         console.error('Feil ved oppdatering av kommentar:', error);
       });
   };
+  
+  
+  
 
   if (loading) {
     return <p>Loading...</p>;
@@ -141,8 +166,8 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
       {post.ImageUrl && <img src={post.ImageUrl} alt="Post Image" />}
       <h4>{post.PostText}</h4>
 
-      <button onClick={handleLikePost} className="btn btn-light" style={{width: "27%", marginBottom:"3%", backgroundColor:""}}>
-        <i><FaHeart style={{ color: "red", fontSize: "20px" }} /></i> {''} {post.LikesCount || 0} Likes
+      <button onClick={handleLikePost} className="btn btn-light" style={{width: "25%", marginBottom:"3%", backgroundColor:""}}>
+        <i><FaHeart className='heart-icon'  /></i> {''} {post.LikesCount || 0} Likes
       </button>
 
       {post.Comments && post.Comments.length > 0 ? (post.Comments.map((comment) => (
@@ -171,18 +196,40 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
         <p>No comments yet</p>
       )}
 
-      <div className="create" style={{ marginBottom: '20%' }}>
-        <form onSubmit={handleAddComment}>
+<div className="create" style={{ marginBottom: '20%' }}>
+        <form onSubmit={handleAddComment} style={{ position: 'relative' }}>
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             className="form-control"
             rows="3"
+            placeholder="Write a comment..."
           />
-          <button type="submit" className="btn btn-outline-success" style={{marginBottom: "3%"}}>
+          <button
+            type="button"
+            className="emoji-button"
+            onClick={() => setShowEmojiPicker((prev) => !prev)}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              border: 'none',
+              background: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            <FaSmile style={{ fontSize: '20px', color: '#888' }} />
+          </button>
+          {showEmojiPicker && (
+            <div className="emoji-picker-container" style={{ position: 'absolute', bottom: '50px', left: '0' }}>
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </div>
+          )}
+
+          <button type="submit" className="btn btn-outline-success" style={{margin: "2%"}}>
             Add Comment
           </button>
-          <button className="btn btn-outline-secondary" style={{marginBottom: "3%"}} onClick={() => window.history.back()}>
+          <button className="btn btn-outline-secondary" onClick={() => window.history.back()}>
           Back to post page
         </button>
         </form>

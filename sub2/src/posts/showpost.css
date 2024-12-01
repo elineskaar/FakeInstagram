@@ -5,24 +5,19 @@
     align-items: left;
     margin: 0 auto;
     padding: 10px;
-    max-width: 60%; /* Optional: limit the width of the content */
-    border: 1px solid #ccc; /* Optional: add a border for clarity */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add shadow for a polished look */
+    max-width: 40%; 
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
-
-/* Center the image and limit its size */
 .layoutpost img {
-    max-width: 100%; /* Ensure it doesn’t overflow its container */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100%; /* Set a maximum height for large images */
-    margin-bottom: 20px; /* Add spacing below the image */
+    max-width: 100%; 
+    height: auto; 
+    max-height: 100%; 
+    margin-bottom: 20px; 
 }
-
-/* Style the comments section */
 h3 {
     margin-top: 10px;
 }
-
 div strong {
     display: flex;
     justify-content: space-between;
@@ -39,13 +34,11 @@ div strong {
     border-radius: 8px;
     margin-bottom: 10px;
 }
-
 .commentbox .buttonsedit .delete{
     background-color: rgba(255, 255, 242);
     border: none;
     padding: 4px 12px;
 }
-
 .commentbox .buttonsedit .delete:hover{
     background-color: rgba(230, 0, 0, 0.166);
 }
@@ -60,10 +53,6 @@ div strong {
     background-color: rgba(0, 230, 84, 0.166);
 }
 
-/* Style the buttons */
-
-
-/* Style the text area for adding comments */
 textarea {
     width: 100%;
     padding: 10px;
@@ -71,8 +60,6 @@ textarea {
     border-radius: 5px;
     margin-bottom: 10px;
 }
-
-/* Style the like button and icon */
 
 .btn-light {
     display: flex;
@@ -86,9 +73,7 @@ textarea {
     transition: background-color 0.3s ease;
 }
 
-button.btn-light:hover {
-    background-color: #fec0f1;
-}
+
 
 @media (max-width: 768px) {
     .layoutpost{
@@ -96,3 +81,22 @@ button.btn-light:hover {
         max-width: 100%;
     }
 }
+.create {
+    position: relative;
+  }
+.emoji-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  .emoji-picker-container {
+    position: absolute;
+    bottom: 50px; /* Adjust based on textarea height */
+    left: 0;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }

@@ -10,19 +10,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-  
-* Sidebar */
-.sidebar {
-  position: fixed; /* Keep sidebar fixed on the left side */
-  top: 0;
-  left: 0;
-  height: 100vh; /* Full height */
-  width: 250px; /* Sidebar width */
-  background-color: #333;
-  color: rgb(255, 255, 242);
-  padding: 20px;
-  z-index: 1000; /* Ensure it stays on top */
-}
 
 /* Main content styles */
 .main-content {
@@ -58,46 +45,34 @@
     align-items: center; /* Center content horizontally */
   }
 
-  .sidebar {
-    display: none; /* Hide sidebar on small screens */
-  }
 
   .main-content {
     width: 100%; /* Make sure it takes up the full width if needed */
     margin: 0 auto; /* Center content horizontally */
   }
 }
-  
-  /* Footer navbar styles */
-  .footerNavbar {
-    display: none; /* Hidden by default */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 15px 10px;
-  }
-  
-  .footerNavbar ul {
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .footerNavbar li a {
-    color: white;
-    text-decoration: none;
-    padding: 20px;
-  }
-  
-  @media (max-width: 768px) {
-    .footerNavbar {
-      display: flex; /* Show footer navbar on smaller screens */      display: inline-block;
-    }
-  }
-  
+
+
+  ::-webkit-scrollbar {
+    width: 20px; /* Adjust the width */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background color */
+    border-radius: 10px; /* Rounded edges for track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #381d1d; /* Thumb color */
+    border-radius: 10px; /* Rounded edges for thumb */
+    border: 5px solid #f1f1f1; /* Add a border for better design */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #381d1d; /* Change color when hovered */
+}
+
+html {
+    scrollbar-width: thick;
+    scrollbar-color:#381d1d #f1f1f1; /* Thumb color and track color */
+}

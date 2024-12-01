@@ -4,10 +4,11 @@
     top: 0;
     left: 0;
     height: 100vh; /* Full height */
-    width: 260px; /* Adjust the width as needed */
+    width: 250px; /* Adjust the width as needed */
     background-color: rgb(255, 255, 242);/* A dark background for the sidebar */
     color: #fff; /* Light text for better contrast */
     padding: 20px;
+    box-shadow: 2px 0 5px black;
   }
   
   /* Sidebar Links */
@@ -24,7 +25,7 @@
 .sidebar a, .footerNavbar li a {
   display: inline-block; /* Restrict width to content */
   color: #381d1d; /* Default text color */
-  font-size: 25px;
+  font-size: 20px;
   text-decoration: none;
   transition: transform 0.3s, color 0.3s; /* Smooth transitions */
 }
@@ -35,7 +36,7 @@
 }
 
 .sidebar a.active, .footerNavbar li a.active {
-  color: rgb(239, 20, 57); /* Set the active link color */
+  color: rgb(239, 20, 57); 
 }
 
 .footerNavbar {
@@ -68,9 +69,6 @@
   text-decoration: none;
   padding: 15px;
 }
-  
-  
-  
 
   @media (max-width: 768px) {
   .sidebar {
@@ -85,5 +83,40 @@
 
 }
 
+/* In your menu.module.css */
 
 
+
+.funFact {
+  background-color: #ff66b2;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.funFact h3 {
+  margin: 0;
+  font-weight: bold;
+}
+
+.funFact p {
+  margin-top: 10px;
+}
+
+.reloadButton {
+  background-color: white; 
+  color: #ff3385;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.reloadButton:hover {
+  background-color: #e9b4c8;
+}

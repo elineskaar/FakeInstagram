@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaHeart } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa"; // Correct import for FaHeart
 import ScrollButton from "../components/ScrollButton";
 import styles from './showall.css';
 
@@ -16,24 +16,22 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
     <div className="container mt-4">
       <h1 style={{ textAlign: "center", marginTop: "3%" }}>Post Overview</h1>
       <div className="row">
-  {/* Sidebar with Sticky Search Bar */}
-  <div className="col-md-3">
-    <div className="sticky-sidebar">
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Search for posts..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-    </div>
-  </div>
+        {/* Sidebar with Sticky Search Bar */}
+        <div className="col-md-3">
+          <div className="sticky-sidebar">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search for posts..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
 
-        {/* Midtre innholdsområde */}
         <div className="col-md-6" style={{ marginBottom: "15%" }}>
           {filteredPosts.map((post) => (
             <div className="card mb-4" key={post.Id}>
-              {/* Viser bilde om det finnes */}
               {post.ImageUrl && (
                 <img
                   src={`${apiUrl.replace(/\/$/, '')}${post.ImageUrl}`}
@@ -42,52 +40,32 @@ const ShowAllPage = ({ posts, apiUrl, onLike }) => {
                 />
               )}
               <div className="card-body">
-                <h5
-                  className="card-title"
-                  style={{ color: "rgb(29, 15, 15)" }}
-                >
+                <h5 className="card-title" style={{ color: "rgb(29, 15, 15)" }}>
                   {post.PostText}
-                </h5>
-
-                {/* Like-knapp */}
-                <button
-                  onClick={() => onLike(post.Id)}
-                  className="btn btn-light"
-                >
+                  </h5>
+                <button onClick={() => onLike(post.Id)} className="btn btn-light">
                   <i>
-                    <FaHeart style={{ color: "red", fontSize: "20px" }} />
+                    <FaHeart className="heart-icon" />
                   </i>{" "}
                   {post.LikesCount || 0} Likes
-                </button> 
+                </button>
                 <hr />
 
-                {/* Oppdater-knapp */}
-                <Link
-                  to={`/posts/update/${post.Id}`}
-                  className="btn btn-outline-info"
-                >
+                <Link to={`/posts/update/${post.Id}`} className="btn btn-outline-info">
                   Update post
                 </Link>
 
-                {/* Vis kommentarer-knapp */}
-                <Link
-                  to={`/posts/show/${post.Id}`}
-                  className="btn btn-outline-info"
-                >
+                <Link to={`/posts/show/${post.Id}`} className="btn btn-outline-info" style={{ marginLeft: "2.5%" }}>
                   Show comments
                 </Link>
               </div>
             </div>
           ))}
         </div>
-        
-        </div>
-
-        {/* Scroll-to-Top Button */}
-        <ScrollButton />
+      </div>
+      <ScrollButton />
     </div>
   );
 };
-
 
 export default ShowAllPage;
