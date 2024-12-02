@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import EmojiPicker from "emoji-picker-react"; 
 import "./PostForm.css"; 
 
@@ -8,7 +8,7 @@ const CreateForm = ({ onSubmit }) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   const handleCaptionChange = (event) => {
     setCaption(event.target.value);
@@ -30,7 +30,7 @@ const CreateForm = ({ onSubmit }) => {
 
   const handleEmojiClick = (emojiObject) => {
     setCaption(caption + emojiObject.emoji);
-    setShowEmojiPicker(false); // Close emoji picker after selection
+    setShowEmojiPicker(false); 
   };
 
   const handleSubmit = (event) => {
@@ -40,11 +40,11 @@ const CreateForm = ({ onSubmit }) => {
     if (image) {
       formData.append("ImageFile", image);
     }
-    onSubmit(formData); // Send the form data to parent
+    onSubmit(formData); 
   };
 
   const handleCancel = () => {
-    navigate('/posts'); // Redirect back to the posts list page
+    navigate('/posts'); 
   };
 
   return (

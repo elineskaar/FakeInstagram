@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaHeart } from "react-icons/fa"; // Correct import for FaHeart
+import { FaHeart } from "react-icons/fa"; 
 import ScrollButton from "../components/ScrollButton";
 import styles from './showall.css';
 
 const ShowAllPage = ({ posts, apiUrl, onLike }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filter posts based on the search term
+ 
   const filteredPosts = posts.filter((post) =>
     post.PostText?.toLowerCase().includes(searchTerm.toLowerCase())
   );

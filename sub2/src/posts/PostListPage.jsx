@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ShowAllPage from './ShowAllPage';
-import ShowPostPage from './ShowPostPage';
+
 
 const API_URL = 'https://localhost:7106';
 
@@ -35,13 +35,11 @@ const PostListPage = () => {
 
   const handleLike = async (postId) => {
     try {
-      // Send en POST-forespørsel til API-en for å legge til like
       const response = await fetch(`${API_URL}/api/PostAPI/like/${postId}`, {
         method: "POST",
       });
   
       if (response.ok) {
-        // Hvis forespørselen er vellykket, oppdater lokalt antall likes
         setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.Id === postId ? { ...post, LikesCount: post.LikesCount + 1 } : post

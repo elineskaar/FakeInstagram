@@ -1,5 +1,3 @@
-/* Reset for å sikre at alt starter fra en kjent tilstand */
-
 :root{
   --body-bg: rgb(255, 255, 242);
   --nav-bg: rgb(255, 255, 242);
@@ -10,18 +8,14 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-/* Main content styles */
 .main-content {
-  background-color: rgb(255, 255, 242); /* Same background color */
-  min-height: 100vh; /* Ensures it takes up at least the full height */
+  background-color: rgb(255, 255, 242); 
+  min-height: 100vh; 
   padding-bottom: 100px;
-  margin-left: 250px; /* Adjust for sidebar width */
-  overflow-y: auto; /* Allow scrolling if content is taller than the viewport */
-  transition: margin-left 0.3s; /* Smooth transition when sidebar is hidden */
+  margin-left: 250px;
+  overflow-y: auto; 
+  transition: margin-left 0.3s; 
 }
-
-/* Scroll Button */
 .ScrollButton {
   position: fixed;
   bottom: 20px;
@@ -33,46 +27,40 @@
   padding: 10px;
   font-size: 25px;
   cursor: pointer;
-  z-index: 1001; /* Ensure it's above other content */
+  z-index: 1001; 
+}
+::-webkit-scrollbar {
+  width: 20px; 
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px; 
+}
+::-webkit-scrollbar-thumb {
+  background: #381d1d;
+  border-radius: 10px; 
+  border: 5px solid #f1f1f1; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #381d1d; 
+}
+html {
+  scrollbar-width: thick;
+  scrollbar-color:#381d1d #f1f1f1; 
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .grid-container {
     display: flex;
-    flex-direction: column; /* Stack content vertically */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
   }
-
-
   .main-content {
-    width: 100%; /* Make sure it takes up the full width if needed */
-    margin: 0 auto; /* Center content horizontally */
+    width: 100%; 
+    margin: 0 auto; 
   }
 }
 
 
-  ::-webkit-scrollbar {
-    width: 20px; /* Adjust the width */
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background color */
-    border-radius: 10px; /* Rounded edges for track */
-}
-
-::-webkit-scrollbar-thumb {
-    background: #381d1d; /* Thumb color */
-    border-radius: 10px; /* Rounded edges for thumb */
-    border: 5px solid #f1f1f1; /* Add a border for better design */
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #381d1d; /* Change color when hovered */
-}
-
-html {
-    scrollbar-width: thick;
-    scrollbar-color:#381d1d #f1f1f1; /* Thumb color and track color */
-}
+  

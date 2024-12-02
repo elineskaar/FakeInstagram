@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./menu.module.css";
-import { FaHouse, FaClipboardList, FaCirclePlus } from "react-icons/fa6"; // Import specific icons
+import { FaHouse, FaClipboardList, FaCirclePlus } from "react-icons/fa6"; 
 
 const SideMenu = () => {
   const location = useLocation();
   const [fact, setFact] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Function to fetch a new fun fact from the API
+  // Function to fetch a new fun fact from the API, fun fact is code we got from ChatGPT
   const fetchFunFact = async () => {
     setLoading(true); // Set loading state before fetching the new fact
     try {

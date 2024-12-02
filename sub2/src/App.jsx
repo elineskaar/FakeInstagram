@@ -7,7 +7,7 @@ import CreatePostPage from "./posts/CreatePostPage";
 import UpdatePostPage from "./posts/UpdatePostPage";
 import ShowPostPage from "./posts/ShowPostPage";
 import DeletePage from "./posts/DeletePage";
-import ScrollButton from "./components/ScrollButton"; // Import the scroll button
+import ScrollButton from "./components/ScrollButton";
 import "./styles/global.css";
 
 const App = () => {

@@ -5,14 +5,14 @@ import EmojiPicker from 'emoji-picker-react';
 const API_URL = 'https://localhost:7106';
 
 const UpdateForm = ({ onSubmit, onCancel, onNavigateToDelete }) => {
-  const { postId } = useParams(); // Henter postId fra URL
+  const { postId } = useParams(); 
   const [post, setPost] = useState(null);
   const [caption, setCaption] = useState('');
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-  // Hent post-data når komponenten lastes inn
+  
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -22,8 +22,8 @@ const UpdateForm = ({ onSubmit, onCancel, onNavigateToDelete }) => {
         }
         const data = await response.json();
         setPost(data);
-        setCaption(data.PostText || ''); // Sett eksisterende tekst
-        setImagePreview(data.ImageUrl || ''); // Sett eksisterende bilde-URL
+        setCaption(data.PostText || ''); 
+        setImagePreview(data.ImageUrl || '');
       } catch (error) {
         console.error('Error fetching post data:', error);
       }
@@ -40,14 +40,14 @@ const UpdateForm = ({ onSubmit, onCancel, onNavigateToDelete }) => {
     if (file) {
       setImage(file);
       const reader = new FileReader();
-      reader.onload = (e) => setImagePreview(e.target.result); // Forhåndsvisning av bildet
+      reader.onload = (e) => setImagePreview(e.target.result); 
       reader.readAsDataURL(file);
     }
   };
 
   const handleEmojiClick = (emojiObject) => {
-    setCaption(caption + emojiObject.emoji); // Legg til emoji i teksten
-    setShowEmojiPicker(false); // Lukk emoji-pickeren
+    setCaption(caption + emojiObject.emoji); 
+    setShowEmojiPicker(false); 
   };
 
   const handleSubmit = (event) => {

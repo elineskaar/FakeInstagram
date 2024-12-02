@@ -1,7 +1,6 @@
-/* Basic Layout */
 .welcome-container h1 {
-  font-size: 35px; /* Adjust size as desired */
-  color: #381d1d;; /* Optional: Add a custom color */
+  font-size: 35px; 
+  color: #381d1d;; 
 }
 
 .welcome-container {
@@ -48,7 +47,7 @@
   /* Speech Bubble Styling */
   .speech-bubble {
     position: absolute;
-    left: 230px; /* Position the speech bubble to the right of the robot */
+    left: 230px; 
     background-color: #ffffff;
     border-radius: 10px;
     padding: 15px;

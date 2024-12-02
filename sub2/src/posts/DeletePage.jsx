@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Added useNavigate
+import { useParams, useNavigate } from 'react-router-dom'; 
 import './showpost.css';
 
 const API_URL = 'https://localhost:7106';
 
 const DeletePage = () => {
-  const { postId } = useParams(); // Retrieve postId from URL
-  const navigate = useNavigate(); // For navigation
+  const { postId } = useParams(); 
+  const navigate = useNavigate(); 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +43,7 @@ const DeletePage = () => {
         }
 
         alert('Post deleted successfully!');
-        navigate('/posts'); // Redirect to posts list after deletion
+        navigate('/posts'); 
       } catch (err) {
         setError(err.message);
       }
@@ -51,7 +51,7 @@ const DeletePage = () => {
   };
 
   const handleCancel = () => {
-    navigate('/posts'); // Redirect to posts list without deleting
+    navigate('/posts'); 
   };
 
   if (loading) return <p>Loading...</p>;

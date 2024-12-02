@@ -45,16 +45,16 @@ public class PostRepository : IPostRepository
     public async Task <bool> UpdateComment(PostComment comment)
     {
     try{
-        // Check if the post is already tracked in the context
+ 
     var existingComment = await _db.PostComments.FindAsync(comment.Id);
     
     if (existingComment != null)
     {
-        // Detach the existing tracked entity
+
         _db.Entry(existingComment).State = EntityState.Detached;
     }
 
-    // Attach the new post entity (post)
+
     _db.PostComments.Update(comment);
     await _db.SaveChangesAsync();
     return true;
@@ -119,16 +119,15 @@ public class PostRepository : IPostRepository
     public async Task <bool> Update(Post post)
     {
     try{
-        // Check if the post is already tracked in the context
+
     var existingPost = await _db.Posts.FindAsync(post.Id);
     
     if (existingPost != null)
     {
-        // Detach the existing tracked entity
         _db.Entry(existingPost).State = EntityState.Detached;
     }
 
-    // Attach the new post entity (post)
+    
     _db.Posts.Update(post);
     await _db.SaveChangesAsync();
     return true;
@@ -167,7 +166,6 @@ public class PostRepository : IPostRepository
     public async Task<bool> DeleteComment(int postId, int commentId)
     {
         try{
-            // Finn kommentaren direkte uten å laste hele posten
             var comment = await _db.PostComments
                            .Where(c => c.PostId == postId && c.Id == commentId)
                            .FirstOrDefaultAsync();
@@ -176,16 +174,16 @@ public class PostRepository : IPostRepository
             {
             _logger.LogError("[PostRepository] comment not found for the PostId {PostId:0000} and CommentId {CommentId:0000}", postId,
             commentId);
-            return false; // Kommentar ble ikke funnet
+            return false; 
             }
 
-            // Fjern kommentaren fra databasen
+           
             _db.PostComments.Remove(comment);
 
-            // Lagre endringene i databasen
+           
             await _db.SaveChangesAsync();
 
-            return true; // Kommentar ble slettet
+            return true; 
         }
         catch (Exception e){
             _logger.LogError("[PostRepository] comment deletion failed for the PostId {PostId:0000}, error message: {e}",

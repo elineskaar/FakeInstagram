@@ -21,7 +21,7 @@ const CreatePostPage = () => {
         throw new Error('Failed to create post');
       }
 
-      navigate('/posts'); // Redirect to posts list after creation
+      navigate('/posts'); 
     } catch (err) {
       setError(err.message);
     } finally {

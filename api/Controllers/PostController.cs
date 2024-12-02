@@ -15,11 +15,11 @@ namespace WebEksamenSub1.Controllers;
 
 public class PostAPIController : Controller{
    private readonly IPostRepository _postRepository;
-    private readonly ILogger<PostAPIController> _logger; //lagt til logging 
+    private readonly ILogger<PostAPIController> _logger; 
 
     public PostAPIController(IPostRepository postRepository, ILogger<PostAPIController> logger){
         _postRepository = postRepository;
-        _logger = logger; //lagt til logging
+        _logger = logger; 
     }
 
     [HttpGet ("postList")]
@@ -36,14 +36,13 @@ public class PostAPIController : Controller{
     Id = post.Id,
     PostText = post.PostText,
     ImageUrl = post.ImageUrl,
-    LikesCount = post.Likes.Count, // Antall likes
+    LikesCount = post.Likes.Count, 
     Comments = post.Comments.Select(comment => new CommentDto
     {
         Id = comment.Id,
         CommentText = comment.CommentText
-    }).ToList() // Bruk ToList() for å konvertere til List<CommentDto>
-}).ToList(); // Hvis du trenger en liste av PostDto
-
+    }).ToList() 
+}).ToList(); 
 
 
     return Ok(postsDto);
@@ -69,10 +68,10 @@ public async Task<IActionResult> Create([FromForm] PostDto postDto)
             await postDto.ImageFile.CopyToAsync(stream);
         }
 
-        // Lagre URL-en til bildet i databasen
+        
         newPost.ImageUrl = $"/images/{postDto.ImageFile.FileName}";
     }
-    // Lagre posten på serveren
+    
     
 
     bool returnOk = await _postRepository.Create(newPost);
@@ -93,7 +92,7 @@ public async Task<IActionResult> GetPost(int id)
         return NotFound("Post not found for the PostId");
     }
 
-    // Mapper Post til PostDto
+    
     var postDto = new PostDto
     {
         Id = post.Id,
@@ -125,7 +124,7 @@ public async Task<IActionResult> Update(int id, [FromForm] PostDto postDto)
         return NotFound("Post not found");
     }
 
-    // Update text content
+    
     existingPost.PostText = postDto.PostText;
 
     // Handle image update if a new file is provided
@@ -166,7 +165,7 @@ private async Task<string> UploadImage(IFormFile imageFile)
  [HttpDelete("delete/{id}")]
 public async Task<IActionResult> DeleteConfirmed(int id)
 {
-    var post = await _postRepository.GetPostById(id); // Ensure this is available
+    var post = await _postRepository.GetPostById(id); 
     if (post == null)
     {
         _logger.LogError("[PostAPIController] Post not found for the PostId {PostId:0000}", id);
@@ -194,11 +193,11 @@ public async Task<IActionResult> LikePost(int postId)
         return NotFound("Post not found");
     }
 
-    // Create a new like for the post
+   
     var like = new PostLike
     {
         PostId = postId,
-        // You could include user information or other properties for likes
+        
     };
 
     bool likeCreated = await _postRepository.AddLikeAsync(like);
@@ -307,10 +306,10 @@ public async Task<IActionResult> DeleteComment(int postId, int commentId)
 public class PostController : Controller
 {
     private readonly IPostRepository _postRepository;
-    private readonly ILogger<PostController> _logger; //lagt til logging
+    private readonly ILogger<PostController> _logger;
     public PostController(IPostRepository postRepository, ILogger<PostController> logger){
         _postRepository = postRepository;
-        _logger = logger; //lagt til logging
+        _logger = logger; 
     }
 
     public async Task<IActionResult> ShowPost(int id)
@@ -375,7 +374,7 @@ public class PostController : Controller
                     var viewModel = new CreatePostCommentViewModel
                     {
                         PostId = postWithUpdatedComment.Id,
-                        Post = postWithUpdatedComment  // Legger til post med oppdaterte likes og kommentarer
+                        Post = postWithUpdatedComment  
                     };
                 return View("ShowPost", viewModel);
                 }
@@ -405,7 +404,7 @@ public class PostController : Controller
             return BadRequest("Comment deletion failed");
         }
 
-        // Etter sletting, omdiriger til innleggets detaljer
+       
         return RedirectToAction("ShowPost", new { id = postId });
     }
     
@@ -425,7 +424,7 @@ public class PostController : Controller
                 var viewModel = new CreatePostCommentViewModel
                 {
                     PostId = postWithLikes.Id,
-                    Post = postWithLikes  // Legger til post med oppdaterte likes og kommentarer
+                    Post = postWithLikes  
                 };
                 return View("ShowPost", viewModel);
             }
@@ -435,18 +434,18 @@ public class PostController : Controller
         }
         else
         {
-        // Hvis brukeren var på ShowAll
+       
             var posts = await _postRepository.GetAll();
             if (posts != null){
                     var viewModel = new PostsViewModel
                     {
-                        Posts = posts // Bruker posts bare hvis det ikke er null
+                        Posts = posts 
                     };
                     return View("ShowAll", viewModel);
             }
             else{
                 var viewModel = new PostsViewModel{
-                    Posts = new List<Post>() // En tom liste i tilfelle posts er null
+                    Posts = new List<Post>() 
                 };
                 return View("ShowAll", viewModel);
             }
@@ -467,10 +466,10 @@ public class PostController : Controller
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> Create(Post post){
-        //Så lenge modelldataene er gyldig:
+        
         if(!ModelState.IsValid){
             _logger.LogWarning("[PostController] ModelState invalid for {@post}", post);
-            return View(post); // Returnerer skjemaet med valideringsfeil
+            return View(post); 
         }
 
         string? imageValidationError = post.ValidateImageFile();
@@ -478,7 +477,7 @@ public class PostController : Controller
         {
             ModelState.AddModelError(nameof(post.ImageFile), imageValidationError);
             _logger.LogWarning("[PostController] Invalid image file for {@post}", post);
-            return View(post); // Returnerer skjemaet med feil for bildet
+            return View(post); 
         }
             
             if(post.ImageFile != null){
@@ -536,7 +535,7 @@ public class PostController : Controller
             {
                 ModelState.AddModelError(nameof(post.ImageFile), imageValidationError);
                 _logger.LogWarning("[PostController] Invalid image file for {@post}", post);
-                return View(post); // Returnerer skjemaet med valideringsfeil
+                return View(post); 
             }
             
             if(post.ImageFile != null){
@@ -556,7 +555,7 @@ public class PostController : Controller
                 {
                     _logger.LogError(e, "[PostController] Error while saving image for {@post}", post);
                     ModelState.AddModelError(nameof(post.ImageFile), "En feil oppsto under lagring av bildet.");
-                    return View(post); // Returnerer skjemaet med feil
+                    return View(post); 
                 }
             }
             else{
@@ -566,10 +565,10 @@ public class PostController : Controller
                 }
                 else{
                      ModelState.AddModelError(nameof(post.Id), "Posten ble ikke funnet.");
-                    return View(post); // Returnerer skjemaet med feil
+                    return View(post); 
                 }
             }
-            //saving the post in database
+           
             
             bool returnOk = await _postRepository.Update(post);
             if(returnOk){

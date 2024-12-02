@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaHeart } from "react-icons/fa6";
 import EmojiPicker from "emoji-picker-react";
-import { FaEdit, FaTrashAlt, FaSmile} from 'react-icons/fa';  // Importing icons from FA6
+import { FaEdit, FaTrashAlt, FaSmile} from 'react-icons/fa';
 import './showpost.css';
 
 const API_URL = 'https://localhost:7106';
 
-const ShowPostPage = ({posts, apiUrl, onLike}) => {
-  const { postId } = useParams();  // Henter postId fra URL
+const ShowPostPage = ({}) => {
+  const { postId } = useParams();  
   const [post, setPost] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
@@ -31,11 +31,11 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
     };
   
     fetchPostData();
-  }, [postId]);  // Hent på nytt når postId endres
+  }, [postId]);  
 
   const handleAddComment = (e) => {
     e.preventDefault();
-    if (!newComment) return; // Legg ikke til tomme kommentarer
+    if (!newComment) return; 
     if (!newComment.trim()) {
         alert("Comment cannot be empty");
         return;
@@ -48,7 +48,7 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
     console.log('postId:', postId);
     console.log('commentData:', commentData);
 
-    // Legg til kommentar
+   
     fetch(`${API_URL}/api/PostAPI/comment/${postId}`, {
       method: 'POST',
       headers: {
@@ -60,12 +60,12 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
         if (!response.ok) {
           throw new Error('Failed to add comment');
         }
-        return response.json(); // Returner alle kommentarer, ikke bare den nye
+        return response.json(); 
       })
       .then((updatedComments) => {
         setPost((prevPost) => ({
           ...prevPost,
-          Comments: updatedComments,  // Oppdater kommentarliste med den fullstendige listen
+          Comments: updatedComments,  
         }));
         setNewComment('');
         setShowEmojiPicker(false); 
@@ -85,13 +85,13 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
         console.log('Server response',likeData);
         setPost((prevPost) => ({
           ...prevPost,
-          LikesCount: likeData.LikesCount  // Oppdater likesCount
+          LikesCount: likeData.LikesCount  
         }));
       })
   };
 
   const handleDeleteComment = (commentId) => {
-    // Prompt user for confirmation before deleting
+    
     const confirmDelete = window.confirm('Are you sure you want to delete this comment?');
     if (confirmDelete) {
       fetch(`${API_URL}/api/PostAPI/comment/${postId}/${commentId}`, {
@@ -111,11 +111,11 @@ const ShowPostPage = ({posts, apiUrl, onLike}) => {
 
   const handleEmojiClick = (emojiObject) => {
     setNewComment((prevComment) => prevComment + emojiObject.emoji);
-    setShowEmojiPicker(false); // Close picker after selection
+    setShowEmojiPicker(false); 
   };
 
   const handleUpdateComment = (commentId, updatedText) => {
-    if (!updatedText) return; // Legg ikke til tomme kommentarer
+    if (!updatedText) return; 
     if (!updatedText.trim()) {
         alert("Comment cannot be empty");
         return;

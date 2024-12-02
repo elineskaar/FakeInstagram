@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FaArrowCircleUp } from "react-icons/fa";
 import styled from "styled-components";
 
-// Styled Button
+// Styled Button, this code is from ChatGPT. It was a lot more difficult to implement scrollbutton in react then mvc, and we needed help from 
+// ChatGPT to get this code to work.
 const Button = styled.button`
   position: fixed;
   bottom: 20px;

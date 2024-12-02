@@ -1,24 +1,21 @@
-/* Center the entire layout */
 .layoutpost {
     display: flex;
     flex-direction: column;
     align-items: left;
     margin: 0 auto;
     padding: 10px;
-    max-width: 60%; /* Optional: limit the width of the content */
-    border: 1px solid #ccc; /* Optional: add a border for clarity */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add shadow for a polished look */
+    max-width: 60%; 
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Center the image and limit its size */
+
 .layoutpost img {
-    max-width: 100%; /* Ensure it doesn’t overflow its container */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100%; /* Set a maximum height for large images */
-    margin-bottom: 20px; /* Add spacing below the image */
+    max-width: 100%; 
+    height: auto; 
+    max-height: 100%; 
+    margin-bottom: 20px; 
 }
-
-/* Style the comments section */
 h3 {
     margin-top: 10px;
 }
@@ -31,8 +28,8 @@ div strong {
 }
 .commentbox{
     
-    justify-content: space-between; /* Push buttons to the end of the line */
-    align-items: center; /* Align everything vertically in the center */
+    justify-content: space-between; 
+    align-items: center;
     padding: 8px;
     background-color: rgba(255, 255, 242, 0.8);
     border: 1px solid #ddd;
@@ -59,8 +56,6 @@ div strong {
 .commentbox .buttonsedit .update:hover{
     background-color: rgba(0, 230, 84, 0.166);
 }
-
-/* Style the buttons */
 .create button {
     margin-top: 10px;
     padding: 8px 16px;
@@ -71,12 +66,9 @@ div strong {
     transition: background-color 0.3s ease;
 
 }
-
 .create button:hover {
     background-color: #89c18c;
 }
-
-/* Style the text area for adding comments */
 textarea {
     width: 100%;
     padding: 10px;
@@ -84,8 +76,6 @@ textarea {
     border-radius: 5px;
     margin-bottom: 10px;
 }
-
-/* Style the like button and icon */
 .btn-light {
     display: flex;
     align-items: left;

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebEksamenSub1.Models{
     public class Post{
         public int Id {get; set;}
-        //public int? ProfileId {get; set;}
+        
         public string? ImageUrl {get; set;}
         
         
@@ -12,7 +12,7 @@ namespace WebEksamenSub1.Models{
         [StringLength(200, ErrorMessage = "Caption cannot exceed 200 characters")] //fikse validation
         public string PostText {get; set;} = string.Empty;
         
-        //public virtual Profile Profile {get; set;} = default!;
+       
 
         public virtual ICollection<PostComment> Comments {get; set;} = new List<PostComment>();
         public virtual ICollection<PostLike> Likes {get; set; }= new List<PostLike>();

@@ -11,7 +11,7 @@ public class PostDbContext :IdentityDbContext
         Database.EnsureCreated();
     }
 
-    public DbSet<Post> Posts { get; set; } = default!; //la til default her pga feil i DbContext
+    public DbSet<Post> Posts { get; set; } = default!; 
     public DbSet<PostComment> PostComments{get; set;} = default!;
-    public DbSet<PostLike> PostLikes{get; set;} = default!; // her også
+    public DbSet<PostLike> PostLikes{get; set;} = default!; 
 }

@@ -15,7 +15,7 @@ const HomePage = () => {
   }, []);
 
   
-
+/*Robot code is from ChatGPT + confetti*/
   return (
     <div>
       
